@@ -6,6 +6,34 @@
     <title>Első weboldalam</title>
      <link rel="icon" type="image/x-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOD-oU2w3TlaqhRQCsS61eeQcdUOWug_Vf1w&s">
      <style>
+      body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
 * {
   box-sizing: border-box;
 }
@@ -36,13 +64,13 @@ div.gallery-item div.desc {
   text-align: center;
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 600px) {
   div.gallery-item {
     width: 45%;
   }
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 600px) {
   div.gallery-item {
     width: 100%;
   }
@@ -50,12 +78,18 @@ div.gallery-item div.desc {
 </style>
 </head>
 <body>
+  <div class="topnav">
+  <a class="active" href="index.html">Kezdőlap</a>
+  <a href="coming.html">Hírek</a>
+  <a href="coming.html">Kapcsolat</a>
+  <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">MEGLEPETÉS</a>
+</div>
 <div class="gallery">
 
 <div class="gallery-item">
     <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Toroczkai_L%C3%A1szl%C3%B3_2024.jpg" alt="Én" title="Én" width="1000">
   </a>
-  <div class="desc">Mivel atöbbiek Toroczkainak hívnak...</div>
+  <div class="desc">Mivel a többiek Toroczkainak hívnak...</div>
 </div>
 
 <div class="gallery-item">
@@ -76,7 +110,7 @@ body {
     <h1 style="text-align:center;">Bonta Lehel</h1>
     <h3 style="text-align:center;">Bemutatkozás</h3>
     <p style="text-align:center;">Bonta Lehel vagyok, 15 éves. Tibolddarócon élek, egy közepes méretű faluban a Bükkalján. Nagyon szeretem a számítógépeket, rengeteget foglalkozom a szabadidőmben számítástechnikával. A Kandó Kálmán Informatikai Technikumba járok.</p>
-    <p style="text-align:center;">Jelenleg tanuló vagyok, de nem szeretnék az informatikában elhelyezezkedni. Szeretnék egyetemen tovább tanulni. Nagyon érdekel a politika, szabadidőmben esszéket szoktam írni. Egy nap szeretnék polgármester, vagy valami hasonló lenni.</p>
+    <p style="text-align:center;">Jelenleg Informatikai tanuló vagyok, de nem szeretnék a szakmában elhelyezkedni. Terveim szerint egyetemen fogok tovább tanulni. Nagyon érdekel a politika, szabadidőmben esszéket szoktam írni. Egy nap szeretnék polgármester, vagy valami hasonló lenni.</p>
 
 </body>
 </html>
