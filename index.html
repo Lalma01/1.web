@@ -5,8 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Első weboldalam</title>
      <link rel="icon" type="image/x-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOD-oU2w3TlaqhRQCsS61eeQcdUOWug_Vf1w&s">
+     <style>
+* {
+  box-sizing: border-box;
+}
+
+div.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+div.gallery-item {
+  margin: 5px;
+  border: 1px solid #ccc;
+  width: 22%;
+}
+
+div.gallery-item:hover {
+  border: 1px solid #777;
+}
+
+div.gallery-item img {
+  width: 100%;
+  height: auto;
+}
+
+div.gallery-item div.desc {
+  padding: 15px;
+  text-align: center;
+}
+
+@media only screen and (max-width: 700px) {
+  div.gallery-item {
+    width: 45%;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  div.gallery-item {
+    width: 100%;
+  }
+}
+</style>
 </head>
 <body>
+<div class="gallery">
+
+<div class="gallery-item">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Toroczkai_L%C3%A1szl%C3%B3_2024.jpg" alt="Én" title="Én" width="1000">
+  </a>
+  <div class="desc">Mivel atöbbiek Toroczkainak hívnak...</div>
+</div>
+
+<div class="gallery-item">
+  <a target="_blank" href="https://www.hazipatika.com/taplalkozas/zoldseg_gyumolcs/cikkek/az_alma_jotekony_hatasaig">
+    <img src="https://cdn.pixabay.com/photo/2016/11/18/13/47/apple-1834639_1280.jpg" alt="Alma" title="Alma" width="1000">
+  </a>
+  <div class="desc">A Varázslatos Alma</div>
+</div>
+</div>
     <style>
 body {
   background-image: url('https://static.vecteezy.com/system/resources/previews/046/602/477/non_2x/cubic-pixel-game-level-background-frame-vector.jpg');
@@ -15,18 +73,10 @@ body {
   background-size: 100% 100%;
 }
 </style>
-<div class="row">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Toroczkai_L%C3%A1szl%C3%B3_2024.jpg" alt="Én" title="Én" style="width:500px">
-  </div>
-  <div class="row">
-    <a href="https://www.hazipatika.com/taplalkozas/zoldseg_gyumolcs/cikkek/az_alma_jotekony_hatasai" target="_blank"><img src="https://cdn.pixabay.com/photo/2016/11/18/13/47/apple-1834639_1280.jpg" alt="A Varázslatos Alma" title="A Varázslatos Alma" style="width:500px"></a>
-  </div>
-</div>
     <h1 style="text-align:center;">Bonta Lehel</h1>
     <h3>Bemutatkozás</h3>
     <p>Bonta Lehel vagyok, 15 éves. Tibolddarócon élek, egy közepes méretű faluban a Bükkalján. Nagyon szeretem a számítógépeket, rengeteget foglalkozom a szabadidőmben számítástechnikával. A Kandó Kálmán Informatikai Technikumba járok.</p>
     <p>Jelenleg tanuló vagyok, de nem szeretnék az informatikában elhelyezezkedni. Szeretnék egyetemen tovább tanulni. Nagyon érdekel a politika, szabadidőmben esszéket szoktam írni. Egy nap szeretnék polgármester, vagy valami hasonló lenni.</p>
-    <img src="" alt="Én" title="Én" width="500">
 
 </body>
 </html>
