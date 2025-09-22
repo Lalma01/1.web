@@ -29,23 +29,16 @@
 }
 
 body {
-  background-color: powderblue; /* A háttérszín átállítva */
-
-  /* Háttérkép stílusa */
-  background-image: url('https://static.vecteezy.com/system/resources/previews/046/602/477/non_2x/cubic-pixel-game-level-background-frame-vector.jpg'); /* Háttérkép hozzáadása */
+  /* háttérkép lefedje az egész oldalt, háttérszín nélkül */
+  margin: 0; /* eltávolítjuk az alapértelmezett margót */
+  background-image: url('https://static.vecteezy.com/system/resources/previews/046/602/477/non_2x/cubic-pixel-game-level-background-frame-vector.jpg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  height: 100vh; /* egész viewport magasság */
 
-  /* Ezek a pozícionálások és méretek általában nem szoktak a body-ra vonatkozni, mert roncsolják az alapértelmezett flow-t,
-     de ha fix háttérként akarod, akkor érdemes inkább egy külön elem vagy ::before pszeudoelem használata.
-     Viszont, ha ez a cél, akkor így hagyhatod: */
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: -1; /* Háttérként legyen */
+  /* Ha fix háttérként akarod, hogy ne mozduljon el görgetéskor */
+  background-attachment: fixed;
 }
 
 /* Galéria stílus */
