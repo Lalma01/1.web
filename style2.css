@@ -1,0 +1,107 @@
+/* Navigációs sáv stílusa */
+.topnav {
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.7);  /* Átlátszó fekete háttér */
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+/* Alap stílusok */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  /* háttérkép lefedje az egész oldalt, háttérszín nélkül */
+  margin: 0; /* eltávolítjuk az alapértelmezett margót */
+  background-image: url('https://static.vecteezy.com/system/resources/previews/046/602/477/non_2x/cubic-pixel-game-level-background-frame-vector.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh; /* egész viewport magasság */
+
+  /* Ha fix háttérként akarod, hogy ne mozduljon el görgetéskor */
+  background-attachment: fixed;
+}
+
+/* Galéria stílus */
+div.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+div.gallery-item {
+  margin: 5px;
+  border: 1px solid #ccc;
+  width: 22%;
+}
+
+div.gallery-item:hover {
+  border: 1px solid #777;
+}
+
+div.gallery-item img {
+  width: 100%;
+  height: auto;
+}
+
+div.gallery-item div.desc {
+  padding: 15px;
+  text-align: center;
+}
+
+/* Kép és szöveg középre igazítása */
+.middle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.middle h1 {
+  font-size: 50px;
+  margin-bottom: 20px;
+}
+
+.middle hr {
+  width: 50%;
+  margin: 20px auto;
+  border: 1px solid white;
+}
+
+/* Mobilbarát nézet */
+@media only screen and (max-width: 600px) {
+  div.gallery-item {
+    width: 45%;
+  }
+
+  .middle h1 {
+    font-size: 30px; /* Kisebb szöveg mobilon */
+  }
+
+  .topnav a {
+    font-size: 14px; /* Kisebb szöveg navigációban mobilon */
+    padding: 12px 14px;
+  }
+}
