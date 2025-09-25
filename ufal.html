@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Üzenőfal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    #guestbook {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #fff;
+    }
+    #guestbook h2 {
+      color: #333;
+      text-align: center;
+    }
+    #messageForm {
+      margin-bottom: 20px;
+    }
+    #messageForm label {
+      display: block;
+      margin: 5px 0;
+    }
+    #messageForm input, #messageForm textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    #messageForm button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #messageForm button:hover {
+      background-color: #0056b3;
+    }
+    #messagesList div {
+      border-bottom: 1px solid #eee;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    #messagesList strong {
+      color: #007bff;
+    }
+    #messagesList small {
+      color: #666;
+      float: right;
+    }
+  </style>
+</head>
+<body>
+  <div id="guestbook">
+    <h2>Írj nekem üzenetet!</h2>
+    <form id="messageForm">
+      <label for="name">Név:</label>
+      <input type="text" id="name" required>
+      <label for="message">Üzenet:</label>
+      <textarea id="message" required></textarea>
+      <button type="submit">Küldés</button>
+    </form>
+    <div id="messagesList"></div>
+  </div>
+
+  <!-- Supabase JS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // Supabase inicializálás
+    const supabaseUrl = 'https://nbaigbrpgargoxjlidns.supabase.co'; 
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5iYWlnYnJwZ2FyZ294amxpZG5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MDA1NDMsImV4cCI6MjA3NDM3NjU0M30.oxN8grvLBlLkC5hnTutdPkBlLyBB7frZHifoZLwSETo';
+    const supabase = Supabase.createClient(supabaseUrl, supabaseKey);
+
+    // Új üzenet küldése
+    document.getElementById('messageForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const message = document.getElementById('message').value.trim();
+      if (name && message) {
+        try {
+          const { error } = await supabase.from('messages').insert([{ name, message }]);
+          if (error) {
+            console.error('Hiba az üzenet mentésekor:', error);
+            alert('Hiba történt az üzenet küldésekor.');
+          } else {
+            document.getElementById('name').value = '';
+            document.getElementById('message').value = '';
+          }
+        } catch (err) {
+          console.error('Hiba:', err);
+          alert('Hiba történt az üzenet küldésekor.');
+        }
+      }
+    });
+
+    // Üzenetek betöltése
+    async function loadMessages() {
+      try {
+        const { data, error } = await supabase
+          .from('messages')
+          .select('*')
+          .order('created_at', { ascending: false });
+        const messagesList = document.getElementById('messagesList');
+        messagesList.innerHTML = '';
+        if (error) {
+          console.error('Hiba az üzenetek betöltésekor:', error);
+          messagesList.innerHTML = '<p>Hiba az üzenetek betöltésekor.</p>';
+          return;
+        }
+        if (data && data.length) {
+          data.forEach((msg) => {
+            const div = document.createElement('div');
+            div.innerHTML = `
+              <strong>${msg.name}</strong>
+              <small>${new Date(msg.created_at).toLocaleString('hu-HU')}</small><br>
+              <p>${msg.message}</p>
+            `;
+            messagesList.appendChild(div);
+          });
+        } else {
+          messagesList.innerHTML = '<p>Még nincsenek üzenetek.</p>';
+        }
+      } catch (err) {
+        console.error('Hiba:', err);
+        messagesList.innerHTML = '<p>Hiba az üzenetek betöltésekor.</p>';
+      }
+    }
+
+    // Kezdeti betöltés
+    loadMessages();
+
+    // Valós idejű frissítés
+    supabase
+      .channel('messages')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, () => {
+        loadMessages();
+      })
+      .subscribe();
+  </script>
+</body>
+</html>
