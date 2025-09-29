@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Üzenőfal</title>
   <style>
     body {
@@ -62,6 +62,13 @@
       color: #666;
       float: right;
     }
+    .feedback {
+      margin-top: 10px;
+      color: green;
+    }
+    .error {
+      color: red;
+    }
   </style>
 </head>
 <body>
@@ -69,10 +76,11 @@
     <h2>Írj nekem üzenetet!</h2>
     <form id="messageForm">
       <label for="name">Név:</label>
-      <input type="text" id="name" required>
+      <input type="text" id="name" required minlength="2" maxlength="100">
       <label for="message">Üzenet:</label>
-      <textarea id="message" required></textarea>
+      <textarea id="message" required minlength="2" maxlength="500"></textarea>
       <button type="submit">Küldés</button>
+      <div id="feedback" class="feedback"></div>
     </form>
     <div id="messagesList"></div>
   </div>
@@ -81,54 +89,93 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     // Supabase inicializálás
-    const supabaseUrl = 'https://nbaigbrpgargoxjlidns.supabase.co'; 
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5iYWlnYnJwZ2FyZ294amxpZG5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4MDA1NDMsImV4cCI6MjA3NDM3NjU0M30.oxN8grvLBlLkC5hnTutdPkBlLyBB7frZHifoZLwSETo';
-    const supabase = Supabase.createClient(supabaseUrl, supabaseKey);
+    const supabaseUrl = 'https://nbaigbrpgargoxjlidns.supabase.co';
+    const supabaseKey = 'YOUR_PUBLIC_ANON_KEY'; // ⚠️ Cseréld ki a saját kulcsodra!
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-    // Új üzenet küldése
-    document.getElementById('messageForm').addEventListener('submit', async (e) => {
+    const messageForm = document.getElementById('messageForm');
+    const nameInput = document.getElementById('name');
+    const messageInput = document.getElementById('message');
+    const feedback = document.getElementById('feedback');
+    const messagesList = document.getElementById('messagesList');
+
+    // Üzenet beküldés
+    messageForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const message = document.getElementById('message').value.trim();
-      if (name && message) {
-        try {
-          const { error } = await supabase.from('messages').insert([{ name, message }]);
-          if (error) {
-            console.error('Hiba az üzenet mentésekor:', error);
-            alert('Hiba történt az üzenet küldésekor.');
-          } else {
-            document.getElementById('name').value = '';
-            document.getElementById('message').value = '';
-          }
-        } catch (err) {
-          console.error('Hiba:', err);
-          alert('Hiba történt az üzenet küldésekor.');
+      const name = nameInput.value.trim();
+      const message = messageInput.value.trim();
+
+      feedback.textContent = '';
+      feedback.className = 'feedback';
+
+      if (name.length < 2 || message.length < 2) {
+        feedback.textContent = 'Túl rövid név vagy üzenet.';
+        feedback.className = 'feedback error';
+        return;
+      }
+
+      try {
+        // IP-cím lekérése
+        const ipRes = await fetch('https://api64.ipify.org?format=json');
+        const ipData = await ipRes.json();
+        const ip_address = ipData.ip;
+
+        const { error } = await supabase
+          .from('messages')
+          .insert([{ name, message, ip_address }]);
+
+        if (error) {
+          console.error('Hiba az üzenet mentésekor:', error);
+          feedback.textContent = 'Hiba: ' + (error.message || 'Ismeretlen hiba');
+          feedback.className = 'feedback error';
+        } else {
+          feedback.textContent = 'Üzenet elküldve!';
+          feedback.className = 'feedback';
+          nameInput.value = '';
+          messageInput.value = '';
         }
+      } catch (err) {
+        console.error('Hálózati hiba:', err);
+        feedback.textContent = 'Hiba történt a küldéskor vagy spam elleni védelem aktiválódott.';
+        feedback.className = 'feedback error';
       }
     });
 
-    // Üzenetek betöltése
+    // Üzenetek betöltése XSS védelemmel
     async function loadMessages() {
       try {
         const { data, error } = await supabase
           .from('messages')
           .select('*')
           .order('created_at', { ascending: false });
-        const messagesList = document.getElementById('messagesList');
+
         messagesList.innerHTML = '';
+
         if (error) {
           console.error('Hiba az üzenetek betöltésekor:', error);
           messagesList.innerHTML = '<p>Hiba az üzenetek betöltésekor.</p>';
           return;
         }
+
         if (data && data.length) {
           data.forEach((msg) => {
             const div = document.createElement('div');
-            div.innerHTML = `
-              <strong>${msg.name}</strong>
-              <small>${new Date(msg.created_at).toLocaleString('hu-HU')}</small><br>
-              <p>${msg.message}</p>
-            `;
+
+            const name = document.createElement('strong');
+            name.textContent = msg.name;
+
+            const date = document.createElement('small');
+            date.textContent = new Date(msg.created_at).toLocaleString('hu-HU');
+
+            const br = document.createElement('br');
+
+            const message = document.createElement('p');
+            message.textContent = msg.message;
+
+            div.appendChild(name);
+            div.appendChild(date);
+            div.appendChild(br);
+            div.appendChild(message);
             messagesList.appendChild(div);
           });
         } else {

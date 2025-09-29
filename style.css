@@ -1,9 +1,10 @@
-/* Navigációs sáv stílusa */
+/* Topnav stílusa */
 .topnav {
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.7);  /* Átlátszó fekete háttér */
 }
 
+/* Igazítás felülre, szín */
 .topnav a {
   float: left;
   color: #f2f2f2;
@@ -13,23 +14,25 @@
   font-size: 17px;
 }
 
+/* Kurzor rámutat --> színváltozás */
 .topnav a:hover {
   background-color: #ddd;
   color: black;
 }
 
+/* Aktív oldal színezése */
 .topnav a.active {
   background-color: #04AA6D;
   color: white;
 }
 
-/* Alap stílusok */
+/* Alap stílus */
 * {
   box-sizing: border-box;
 }
 
 body {
-  /* háttérkép lefedje az egész oldalt, háttérszín nélkül */
+  /* háttérkép lefedje az egész oldalt */
   margin: 0; /* eltávolítjuk az alapértelmezett margót */
   background-image: url('https://static.vecteezy.com/system/resources/previews/046/602/477/non_2x/cubic-pixel-game-level-background-frame-vector.jpg');
   background-position: center;
@@ -37,11 +40,11 @@ body {
   background-size: cover;
   height: 100vh; /* egész viewport magasság */
 
-  /* Ha fix háttérként akarod, hogy ne mozduljon el görgetéskor */
+  /* Fix háttér, nem mozog görgetéskor */
   background-attachment: fixed;
 }
 
-/* Galéria stílus */
+/* Galéria stílusa */
 div.gallery {
   display: flex;
   flex-wrap: wrap;
