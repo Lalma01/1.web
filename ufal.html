@@ -80,19 +80,27 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
-    // 1. Supabase kliens inicializálása - EZ MINDIG ELSŐNEK JÖN
+    // 1. Supabase kliens inicializálása
     const supabaseUrl = 'https://vzsfduzrjycgogmjnyuy.supabase.co';
+    // FIGYELEM: Az anon kulcsot ne tedd éles frontendbe! Használj RLS-t!
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ6c2ZkdXpyanljZ29nbWpueXV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMzAxMzEsImV4cCI6MjA3NDcwNjEzMX0.LA_QKXmUzVlqR318USt2Gp0TWdB00ojfmf9fg8_k3IY';
     const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-    // 2. DOM elemek lekérése
+    // 2. DOM elemek
     const messageForm = document.getElementById('messageForm');
     const nameInput = document.getElementById('name');
     const messageInput = document.getElementById('message');
     const feedback = document.getElementById('feedback');
     const messagesList = document.getElementById('messagesList');
 
-    // 3. Üzenetek betöltése és megjelenítése
+    // 3. IP cím lekérése egyszer oldalbetöltéskor
+    let ip_address = '';
+    fetch('https://api64.ipify.org?format=json')
+      .then(res => res.json())
+      .then(data => ip_address = data.ip)
+      .catch(err => console.warn('IP lekérés sikertelen:', err));
+
+    // 4. Üzenetek betöltése
     async function loadMessages() {
       try {
         const { data, error } = await supabase
@@ -100,13 +108,13 @@
           .select('*')
           .order('created_at', { ascending: false });
 
+        messagesList.innerHTML = '';
+
         if (error) {
           console.error('Hiba az üzenetek lekérésekor:', error);
           messagesList.innerHTML = '<p>Nem sikerült betölteni az üzeneteket.</p>';
           return;
         }
-
-        messagesList.innerHTML = '';
 
         if (!data.length) {
           messagesList.innerHTML = '<p>Még nincsenek üzenetek.</p>';
@@ -115,7 +123,6 @@
 
         data.forEach(msg => {
           const div = document.createElement('div');
-
           const name = document.createElement('strong');
           name.textContent = msg.name;
 
@@ -138,7 +145,7 @@
       }
     }
 
-    // 4. Üzenet beküldése
+    // 5. Üzenet beküldése
     messageForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -155,11 +162,6 @@
       }
 
       try {
-        // IP cím lekérése (nem kötelező, de beillesztve)
-        const ipRes = await fetch('https://api64.ipify.org?format=json');
-        const ipData = await ipRes.json();
-        const ip_address = ipData.ip;
-
         const { error } = await supabase
           .from('messages')
           .insert([{ name, message, ip_address }]);
@@ -171,7 +173,11 @@
           feedback.textContent = 'Üzenet elküldve!';
           nameInput.value = '';
           messageInput.value = '';
+          nameInput.focus();
           loadMessages();
+
+          // Automatikus visszajelzés törlés 5 mp után
+          setTimeout(() => feedback.textContent = '', 5000);
         }
       } catch (err) {
         feedback.textContent = 'Hiba a küldéskor.';
@@ -180,9 +186,9 @@
       }
     });
 
-    // 5. Valós idejű frissítés figyelése
-    supabase
-      .channel('public:messages')
+    // 6. Valós idejű frissítés Supabase v2 szerint
+    const channel = supabase
+      .channel('guestbook_updates')
       .on('postgres_changes', {
         event: 'INSERT',
         schema: 'public',
@@ -193,9 +199,9 @@
       })
       .subscribe();
 
-    // 6. Oldal betöltésekor üzenetek betöltése
+    // 7. Oldal betöltésekor üzenetek betöltése
     loadMessages();
   </script>
 </body>
 </html>
-6.0
+
