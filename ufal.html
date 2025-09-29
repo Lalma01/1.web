@@ -2,11 +2,10 @@
 <html lang="hu">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="author" content="Lalma01">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Üzenőfal</title>
   <style>
-    body {
+        body {
       font-family: Arial, sans-serif;
       background-color: #f9f9f9;
       color: #333;
@@ -77,12 +76,15 @@
     <div id="messagesList"><p>Üzenetek betöltése...</p></div>
   </div>
 
-  <!-- Supabase SDK -->
+  <!-- Supabase SDK betöltése -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script>
-    // SAJÁT Supabase URL és kulcs
-    const supabaseUrl = 'https://vzsfduzrjycgogmjnyuy.supabase.co'; // IDE az URL
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ6c2ZkdXpyanljZ29nbWpueXV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMzAxMzEsImV4cCI6MjA3NDcwNjEzMX0.LA_QKXmUzVlqR318USt2Gp0TWdB00ojfmf9fg8_k3IY'; // IDE a saját kulcs
+    // MINDEN SUPABASE KAPCSOLAT ÉS MŰVELET EGY SCRIPT-BEN legyen,
+    // hogy a supabase változó biztosan deklarálva legyen, mielőtt használod.
+
+    const supabaseUrl = 'https://vzsfduzrjycgogmjnyuy.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ6c2ZkdXpyanljZ29nbWpueXV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMzAxMzEsImV4cCI6MjA3NDcwNjEzMX0.LA_QKXmUzVlqR318USt2Gp0TWdB00ojfmf9fg8_k3IY';
     const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
     const messageForm = document.getElementById('messageForm');
@@ -91,7 +93,46 @@
     const feedback = document.getElementById('feedback');
     const messagesList = document.getElementById('messagesList');
 
-    // Üzenet beküldése
+    async function loadMessages() {
+      try {
+        const { data, error } = await supabase
+          .from('messages')
+          .select('*')
+          .order('created_at', { ascending: false });
+        if (error) throw error;
+
+        messagesList.innerHTML = '';
+
+        if (!data || data.length === 0) {
+          messagesList.innerHTML = '<p>Még nincsenek üzenetek.</p>';
+          return;
+        }
+
+        data.forEach(msg => {
+          const div = document.createElement('div');
+
+          const name = document.createElement('strong');
+          name.textContent = msg.name;
+
+          const date = document.createElement('small');
+          date.textContent = new Date(msg.created_at).toLocaleString('hu-HU');
+
+          const p = document.createElement('p');
+          p.textContent = msg.message;
+
+          div.appendChild(name);
+          div.appendChild(date);
+          div.appendChild(document.createElement('br'));
+          div.appendChild(p);
+
+          messagesList.appendChild(div);
+        });
+      } catch (error) {
+        console.error(error);
+        messagesList.innerHTML = '<p>Nem sikerült betölteni az üzeneteket.</p>';
+      }
+    }
+
     messageForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const name = nameInput.value.trim();
@@ -122,7 +163,7 @@
           feedback.textContent = 'Üzenet elküldve!';
           nameInput.value = '';
           messageInput.value = '';
-          loadMessages(); // frissítés
+          loadMessages();
         }
       } catch (err) {
         feedback.textContent = 'Hiba a küldéskor.';
@@ -131,63 +172,17 @@
       }
     });
 
-    // Üzenetek lekérdezése és megjelenítése
-    async function loadMessages() {
-      try {
-        const { data, error } = await supabase
-          .from('messages')
-          .select('*')
-          .order('created_at', { ascending: false });
-
-        if (error) {
-          console.error('Lekérési hiba:', error);
-          messagesList.innerHTML = '<p>Nem sikerült betölteni az üzeneteket.</p>';
-          return;
-        }
-
-        messagesList.innerHTML = '';
-
-        if (!data || data.length === 0) {
-          messagesList.innerHTML = '<p>Még nincsenek üzenetek.</p>';
-          return;
-        }
-
-        data.forEach(msg => {
-          const div = document.createElement('div');
-
-          const name = document.createElement('strong');
-          name.textContent = msg.name;
-
-          const date = document.createElement('small');
-          date.textContent = new Date(msg.created_at).toLocaleString('hu-HU');
-
-          const p = document.createElement('p');
-          p.textContent = msg.message;
-
-          div.appendChild(name);
-          div.appendChild(date);
-          div.appendChild(document.createElement('br'));
-          div.appendChild(p);
-
-          messagesList.appendChild(div);
-        });
-      } catch (err) {
-        console.error('Hiba:', err);
-        messagesList.innerHTML = '<p>Hiba történt az üzenetek betöltésekor.</p>';
-      }
-    }
-
-    // Oldal betöltésekor lekérjük az üzeneteket
+    // Betöltéskor betöltjük az üzeneteket
     loadMessages();
 
-    // Valós idejű frissítés - helyesen konfigurálva
+    // Valós idejű frissítés
     supabase
-      .channel('public:messages') // csatorna név bármi lehet, de egységes legyen
+      .channel('public:messages')
       .on('postgres_changes', {
         event: 'INSERT',
         schema: 'public',
         table: 'messages'
-      }, (payload) => {
+      }, payload => {
         console.log('Új üzenet érkezett:', payload);
         loadMessages();
       })
