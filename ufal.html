@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Üzenőfal</title>
   <style>
-        body {
+    body {
       font-family: Arial, sans-serif;
       background-color: #f9f9f9;
       color: #333;
@@ -73,37 +73,42 @@
       <button type="submit">Küldés</button>
       <div id="feedback" class="feedback"></div>
     </form>
-    <div id="messagesList"><p>Üzenetek betöltése...</p></div>
+    <div id="messagesList"></div>
   </div>
 
   <!-- Supabase SDK betöltése -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
-    // MINDEN SUPABASE KAPCSOLAT ÉS MŰVELET EGY SCRIPT-BEN legyen,
-    // hogy a supabase változó biztosan deklarálva legyen, mielőtt használod.
-
+    // 1. Supabase kliens inicializálása - EZ MINDIG ELSŐNEK JÖN
     const supabaseUrl = 'https://vzsfduzrjycgogmjnyuy.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ6c2ZkdXpyanljZ29nbWpueXV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMzAxMzEsImV4cCI6MjA3NDcwNjEzMX0.LA_QKXmUzVlqR318USt2Gp0TWdB00ojfmf9fg8_k3IY';
     const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
+    // 2. DOM elemek lekérése
     const messageForm = document.getElementById('messageForm');
     const nameInput = document.getElementById('name');
     const messageInput = document.getElementById('message');
     const feedback = document.getElementById('feedback');
     const messagesList = document.getElementById('messagesList');
 
+    // 3. Üzenetek betöltése és megjelenítése
     async function loadMessages() {
       try {
         const { data, error } = await supabase
           .from('messages')
           .select('*')
           .order('created_at', { ascending: false });
-        if (error) throw error;
+
+        if (error) {
+          console.error('Hiba az üzenetek lekérésekor:', error);
+          messagesList.innerHTML = '<p>Nem sikerült betölteni az üzeneteket.</p>';
+          return;
+        }
 
         messagesList.innerHTML = '';
 
-        if (!data || data.length === 0) {
+        if (!data.length) {
           messagesList.innerHTML = '<p>Még nincsenek üzenetek.</p>';
           return;
         }
@@ -127,14 +132,16 @@
 
           messagesList.appendChild(div);
         });
-      } catch (error) {
-        console.error(error);
-        messagesList.innerHTML = '<p>Nem sikerült betölteni az üzeneteket.</p>';
+      } catch (err) {
+        console.error('Hiba:', err);
+        messagesList.innerHTML = '<p>Hiba történt az üzenetek betöltésekor.</p>';
       }
     }
 
+    // 4. Üzenet beküldése
     messageForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+
       const name = nameInput.value.trim();
       const message = messageInput.value.trim();
 
@@ -148,6 +155,7 @@
       }
 
       try {
+        // IP cím lekérése (nem kötelező, de beillesztve)
         const ipRes = await fetch('https://api64.ipify.org?format=json');
         const ipData = await ipRes.json();
         const ip_address = ipData.ip;
@@ -172,10 +180,7 @@
       }
     });
 
-    // Betöltéskor betöltjük az üzeneteket
-    loadMessages();
-
-    // Valós idejű frissítés
+    // 5. Valós idejű frissítés figyelése
     supabase
       .channel('public:messages')
       .on('postgres_changes', {
@@ -187,6 +192,10 @@
         loadMessages();
       })
       .subscribe();
+
+    // 6. Oldal betöltésekor üzenetek betöltése
+    loadMessages();
   </script>
 </body>
 </html>
+6.0
