@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Üzenőfal</title>
+  <meta charset="UTF-8">
+  <title>Vendégkönyv</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -63,22 +62,23 @@
   </style>
 </head>
 <body>
-  <div id="guestbook">
-    <h2>Írj nekem üzenetet!</h2>
-    <form id="messageForm">
-      <label for="name">Név:</label>
-      <input type="text" id="name" required minlength="2" maxlength="100" />
-      <label for="message">Üzenet:</label>
-      <textarea id="message" required minlength="2" maxlength="500"></textarea>
-      <button type="submit">Küldés</button>
-      <div id="feedback" class="feedback"></div>
-    </form>
-    <div id="messagesList"></div>
-  </div>
+  <h1>Vendégkönyv</h1>
+  <form id="messageForm">
+    <label for="name">Név:</label><br>
+    <input type="text" id="name" required><br><br>
+    <label for="message">Üzenet:</label><br>
+    <textarea id="message" required></textarea><br><br>
+    <button type="submit">Küldés</button>
+    <div id="feedback" class="feedback"></div>
+  </form>
 
-  <!-- Supabase SDK -->
+  <h2>Üzenetek</h2>
+  <div id="messagesList"></div>
+
+  <!-- Supabase JS betöltése -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- Külső JavaScript fájl -->
-  <script src="app.js"></script>
+
+  <!-- Saját JS fájl betöltése modulként -->
+  <script type="module" src="app.js"></script>
 </body>
 </html>
