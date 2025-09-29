@@ -21,16 +21,171 @@
       border-radius: 8px;
       background-color: #fff;
     }
-    #guestbook h2 {
+    h2 {
       text-align: center;
     }
-    #messageForm label {
-      display: block;
+    label {
       margin-top: 10px;
+      display: block;
     }
-    #messageForm input, #messageForm textarea {
+    input, textarea {
       width: 100%;
       padding: 8px;
       margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radiu
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .feedback {
+      margin-top: 10px;
+      color: green;
+    }
+    .error {
+      color: red;
+    }
+    #messagesList div {
+      border-bottom: 1px solid #ccc;
+      padding: 10px 0;
+    }
+    #messagesList small {
+      color: #666;
+      float: right;
+    }
+  </style>
+</head>
+<body>
+  <div id="guestbook">
+    <h2>Írj nekem üzenetet!</h2>
+    <form id="messageForm">
+      <label for="name">Név:</label>
+      <input type="text" id="name" required minlength="2" maxlength="100">
+      <label for="message">Üzenet:</label>
+      <textarea id="message" required minlength="2" maxlength="500"></textarea>
+      <button type="submit">Küldés</button>
+      <div id="feedback" class="feedback"></div>
+    </form>
+    <div id="messagesList"></div>
+  </div>
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // ✅ Cseréld ki a SAJÁT Supabase URL-re és kulcsra
+    const supabaseUrl = 'https://YOUR_PROJECT_ID.supabase.co'; // ⬅️ IDE a saját URL
+    const supabaseKey = 'YOUR_PUBLIC_ANON_KEY'; // ⬅️ IDE a saját kulcs
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    const messageForm = document.getElementById('messageForm');
+    const nameInput = document.getElementById('name');
+    const messageInput = document.getElementById('message');
+    const feedback = document.getElementById('feedback');
+    const messagesList = document.getElementById('messagesList');
+
+    // Üzenet beküldése
+    messageForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = nameInput.value.trim();
+      const message = messageInput.value.trim();
+
+      feedback.textContent = '';
+      feedback.className = 'feedback';
+
+      if (name.length < 2 || message.length < 2) {
+        feedback.textContent = 'Túl rövid név vagy üzenet.';
+        feedback.classList.add('error');
+        return;
+      }
+
+      try {
+        const ipRes = await fetch('https://api64.ipify.org?format=json');
+        const ipData = await ipRes.json();
+        const ip_address = ipData.ip;
+
+        const { error } = await supabase
+          .from('messages')
+          .insert([{ name, message, ip_address }]);
+
+        if (error) {
+          feedback.textContent = 'Hiba: ' + error.message;
+          feedback.classList.add('error');
+        } else {
+          feedback.textContent = 'Üzenet elküldve!';
+          nameInput.value = '';
+          messageInput.value = '';
+          loadMessages(); // frissítés
+        }
+      } catch (err) {
+        feedback.textContent = 'Hiba a küldéskor.';
+        feedback.classList.add('error');
+        console.error(err);
+      }
+    });
+
+    // Üzenetek lekérdezése
+    async function loadMessages() {
+      try {
+        const { data, error } = await supabase
+          .from('messages')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Lekérési hiba:', error);
+          messagesList.innerHTML = '<p>Nem sikerült betölteni az üzeneteket.</p>';
+          return;
+        }
+
+        messagesList.innerHTML = '';
+
+        data.forEach(msg => {
+          const div = document.createElement('div');
+
+          const name = document.createElement('strong');
+          name.textContent = msg.name;
+
+          const date = document.createElement('small');
+          date.textContent = new Date(msg.created_at).toLocaleString('hu-HU');
+
+          const p = document.createElement('p');
+          p.textContent = msg.message;
+
+          div.appendChild(name);
+          div.appendChild(date);
+          div.appendChild(document.createElement('br'));
+          div.appendChild(p);
+
+          messagesList.appendChild(div);
+        });
+      } catch (err) {
+        console.error('Hiba:', err);
+      }
+    }
+
+    // Oldal betöltésekor hívjuk meg
+    loadMessages();
+
+    // Valós idejű frissítés
+    supabase
+      .channel('public:messages')
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'messages'
+      }, payload => {
+        console.log('Új üzenet érkezett:', payload);
+        loadMessages();
+      })
+      .subscribe();
+  </script>
+</body>
+</html>
