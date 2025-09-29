@@ -80,11 +80,10 @@
   <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // ✅ Cseréld ki a SAJÁT Supabase URL-re és kulcsra
-    const supabaseUrl = 'https://YOUR_PROJECT_ID.supabase.co'; // ⬅️ IDE a saját URL
-    const supabaseKey = 'YOUR_PUBLIC_ANON_KEY'; // ⬅️ IDE a saját kulcs
+    //SAJÁT Supabase URL és kulcs
+    const supabaseUrl = 'https://vzsfduzrjycgogmjnyuy.supabase.co'; //IDE az URL
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ6c2ZkdXpyanljZ29nbWpueXV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMzAxMzEsImV4cCI6MjA3NDcwNjEzMX0.LA_QKXmUzVlqR318USt2Gp0TWdB00ojfmf9fg8_k3IY'; //IDE a saját kulcs
     const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
     const messageForm = document.getElementById('messageForm');
     const nameInput = document.getElementById('name');
     const messageInput = document.getElementById('message');
