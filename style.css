@@ -32,7 +32,7 @@
 }
 
 body {
-  /* háttérkép lefedje az egész oldalt */
+  /* háttérkép lefedi az egész oldalt */
   margin: 0; /* eltávolítjuk az alapértelmezett margót */
   background-image: url('https://static.vecteezy.com/system/resources/previews/046/602/477/non_2x/cubic-pixel-game-level-background-frame-vector.jpg');
   background-position: center;
