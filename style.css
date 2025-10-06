@@ -31,46 +31,6 @@
   box-sizing: border-box;
 }
 
-body {
-  /* háttérkép lefedi az egész oldalt */
-  margin: 0; /* eltávolítjuk az alapértelmezett margót */
-  background-image: url('https://static.vecteezy.com/system/resources/previews/046/602/477/non_2x/cubic-pixel-game-level-background-frame-vector.jpg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 100vh; /* egész viewport magasság */
-
-  /* Fix háttér, nem mozog görgetéskor */
-  background-attachment: fixed;
-}
-
-/* Galéria stílusa */
-div.gallery {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-
-div.gallery-item {
-  margin: 5px;
-  border: 1px solid #ccc;
-  width: 22%;
-}
-
-div.gallery-item:hover {
-  border: 1px solid #777;
-}
-
-div.gallery-item img {
-  width: 100%;
-  height: auto;
-}
-
-div.gallery-item div.desc {
-  padding: 15px;
-  text-align: center;
-}
-
 img:hover {
   transform: scale(1.1); /* Finomabb nagyítás */
 }
