@@ -105,6 +105,7 @@ div.gallery-item div.desc {
     padding: 12px 14px;
   }
 }
+
 table { /*Órarend stílusa(i)*/
   font-family: arial, sans-serif;
   border-collapse: collapse;
@@ -118,8 +119,10 @@ td, th {
 }
 
 tr:nth-child(even) {
-  background-color: black;
+  background-color: gray;
+  opacity: 0.3;
 }
+
 .balra {
     float: left;          /* Balra úszik */
     max-width: 800px;     /* Ne legyen túl nagy a kép */
