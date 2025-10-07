@@ -118,5 +118,11 @@ td, th {
 }
 
 tr:nth-child(even) {
-  background-color: #dddddd;
+  background-color: black;
+}
+.balra {
+    float: left;          /* Balra úszik */
+    margin: 0 15px 15px 0; /* Alsó és jobb margó */
+    max-width: 300px;     /* Ne legyen túl nagy */
+    border-radius: 8px;   /* Lekerekített sarkok (opcionális) */
 }
