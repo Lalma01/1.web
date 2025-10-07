@@ -1,4 +1,4 @@
-/* Navigációs sáv stílusa */
+/* Topnav stílusa(i) */
 .topnav {
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.7);  /* Átlátszó fekete háttér */
@@ -29,7 +29,7 @@
 }
 
 body {
-  /* háttérkép lefedje az egész oldalt, háttérszín nélkül */
+  /* háttérkép lefedje az egész oldalt */
   margin: 0; /* eltávolítjuk az alapértelmezett margót */
   background-image: url('https://static.vecteezy.com/system/resources/previews/046/602/477/non_2x/cubic-pixel-game-level-background-frame-vector.jpg');
   background-position: center;
@@ -37,11 +37,11 @@ body {
   background-size: cover;
   height: 100vh; /* egész viewport magasság */
 
-  /* Ha fix háttérként akarod, hogy ne mozduljon el görgetéskor */
+  /* fix háttér, ne mozduljon el görgetéskor */
   background-attachment: fixed;
 }
 
-/* Galéria stílus */
+/* Galéria stílus (használaton kívül) */
 div.gallery {
   display: flex;
   flex-wrap: wrap;
@@ -68,7 +68,7 @@ div.gallery-item div.desc {
   text-align: center;
 }
 
-/* Kép és szöveg középre igazítása */
+/* Kép és szöveg középre igazítása (csak coming.html esetében */
 .middle {
   position: absolute;
   top: 50%;
@@ -105,7 +105,7 @@ div.gallery-item div.desc {
     padding: 12px 14px;
   }
 }
-table {
+table { /*Órarend stílusa(i)*/
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
@@ -122,7 +122,6 @@ tr:nth-child(even) {
 }
 .balra {
     float: left;          /* Balra úszik */
-    margin: 0 15px 15px 0; /* Alsó és jobb margó */
-    max-width: 300px;     /* Ne legyen túl nagy */
-    border-radius: 8px;   /* Lekerekített sarkok (opcionális) */
+    max-width: 800px;     /* Ne legyen túl nagy a kép */
+    border-radius: 8px;   /* Lekerekített sarkok */
 }
