@@ -147,7 +147,7 @@ div.gallery-item div.desc {
   text-align: center;
 }
 
-/* Kép és szöveg középre igazítása (csak coming.html esetében */
+/* Kép és szöveg középre igazítása (csak coming.html esetében) */
 .middle {
   position: absolute;
   top: 50%;
@@ -204,7 +204,7 @@ tr:nth-child(even) {
 
 .balra {
     float: left;          /* Balra úszik */
-    max-width: 800px;     /* Ne legyen túl nagy a kép */
+    max-width: 500px;     /* Ne legyen túl nagy a kép */
     border-radius: 8px;   /* Lekerekített sarkok */
     
 }
