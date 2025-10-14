@@ -58,7 +58,6 @@
 }
 
 .topnav a:hover, .dropdown:hover .dropbtn {
-  background-color: #555;
   color: white;
 }
 
@@ -204,7 +203,6 @@ tr:nth-child(even) {
 
 .balra {
     float: left;          /* Balra úszik */
-    max-width: 500px;     /* Ne legyen túl nagy a kép */
     border-radius: 8px;   /* Lekerekített sarkok */
     
 }
