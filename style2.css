@@ -1,7 +1,7 @@
 /* Topnav stílusa(i) */
 .topnav {
   overflow: hidden;
-  background-color: rgba(0, 0, 0, 0.7);  /* Átlátszó fekete háttér */
+  background-color: rgba(0, 0, 0, 0.7); /* Átlátszó fekete háttér */
 }
 
 .topnav a {
@@ -23,7 +23,7 @@
   color: white;
 }
 
-.dropdown { /*Legördülő menü*/
+.dropdown {
   float: left;
   overflow: hidden;
 }
@@ -78,9 +78,6 @@
     float: right;
     display: block;
   }
-}
-
-@media screen and (max-width: 600px) {
   .topnav.responsive {position: relative;}
   .topnav.responsive .icon {
     position: absolute;
@@ -107,16 +104,14 @@
 }
 
 body {
-  /* háttérkép lefedje az egész oldalt */
-  margin: 0; /* eltávolítjuk az alapértelmezett margót */
+  margin: 0;
   background-image: url('https://static.vecteezy.com/system/resources/previews/046/602/477/non_2x/cubic-pixel-game-level-background-frame-vector.jpg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100vh; /* egész viewport magasság */
-
-  /* fix háttér, ne mozduljon el görgetéskor */
+  min-height: 100vh; /* Teljes viewport magasság */
   background-attachment: fixed;
+  font-family: Arial, sans-serif; /* Egységes betűtípus */
 }
 
 /* Galéria stílus (használaton kívül) */
@@ -168,24 +163,21 @@ div.gallery-item div.desc {
   border: 1px solid white;
 }
 
-/* Mobilbarát nézet */
-@media only screen and (max-width: 600px) {
-  div.gallery-item {
-    width: 45%;
-  }
-
-  .middle h1 {
-    font-size: 30px; /* Kisebb szöveg mobilon */
-  }
-
-  .topnav a {
-    font-size: 14px; /* Kisebb szöveg navigációban mobilon */
-    padding: 12px 14px;
-  }
+/* Kép stílusa */
+.balra {
+  float: left;
+  border-radius: 8px;
+  max-width: 300px; /* Fix szélesség a kép méretének szabályozására */
+  margin: 10px; /* Margó a kép körül */
 }
 
-table { /*Órarend stílusa(i)*/
-  font-family: arial, sans-serif;
+img:hover {
+  transform: scale(1.3); /* Kép nagyítása */
+}
+
+/* Órarend stílusa(i) */
+table {
+  font-family: Arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
 }
@@ -201,12 +193,35 @@ tr:nth-child(even) {
   opacity: 0.3;
 }
 
-.balra {
-    float: left;          /* Balra úszik */
-    border-radius: 8px;   /* Lekerekített sarkok */
-    
+/* Mobilbarát nézet */
+@media only screen and (max-width: 600px) {
+  div.gallery-item {
+    width: 45%;
+  }
+
+  .middle h1 {
+    font-size: 30px; /* Kisebb szöveg mobilon */
+  }
+
+  .topnav a {
+    font-size: 14px; /* Kisebb szöveg navigációban mobilon */
+    padding: 12px 14px;
+  }
+
+  .balra {
+    max-width: 100%; /* Kép teljes szélesség mobilon */
+    margin: 5px auto; /* Középre igazítás */
+    display: block;
+  }
 }
 
-img:hover {
-            transform: scale(1.3); /*Kép nagyítása*/
-        }
+.marquee {
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    animation: marquee 5s linear infinite alternate;
+}
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(100%); }
+}
