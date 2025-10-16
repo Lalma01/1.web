@@ -219,7 +219,7 @@ tr:nth-child(even) {
     white-space: nowrap;
     overflow: hidden;
     display: inline-block;
-    animation: marquee 5s linear infinite alternate;
+    animation: marquee 10s linear infinite alternate;
 }
 @keyframes marquee {
     0% { transform: translateX(0); }
