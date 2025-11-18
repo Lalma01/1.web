@@ -171,10 +171,6 @@ div.gallery-item div.desc {
   margin: 10px; /* Margó a kép körül */
 }
 
-img:hover {
-  transform: scale(1.3); /* Kép nagyítása */
-}
-
 /* Órarend stílusa(i) */
 table {
   font-family: Arial, sans-serif;
@@ -224,4 +220,10 @@ tr:nth-child(even) {
 @keyframes marquee {
     0% { transform: translateX(0); }
     100% { transform: translateX(100%); }
+}
+.kozep {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
