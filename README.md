@@ -1,2 +1,2 @@
-https://www.lalma01.github.io/1.web/index.html
+http://www.lalma01.github.io/1.web/index.html
 kecske
