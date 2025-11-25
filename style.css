@@ -227,3 +227,24 @@ tr:nth-child(even) {
   margin-right: auto;
   width: 50%;
 }
+.evszakok {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  padding: 50px 20px;
+}
+
+.evszakok img {
+  width: 280px;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+  transition: 0.3s;
+}
+
+.evszakok img:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+}
