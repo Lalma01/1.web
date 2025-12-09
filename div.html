@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Lalma01">
+    <title>DIV-feladat</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+
+        }
+        h1 {
+            text-align: center;
+            margin: 20px;
+
+        }
+        .piros-doboz {
+            background-color: red;
+            width: 1400px;
+            height: 150px;
+            padding: 20px;
+            margin: 10px 40px;
+            color: white;
+        }
+        .kek-doboz {
+            background-color: blue;
+            width: 670px;
+            height: 150px;
+            padding: 20px;
+            margin: 10px 10px 10px 40px;
+            color: white;
+            float: left;
+        }
+        .zold-doboz {
+            background-color: green;
+            width: 670px;
+            height: 150px;
+            padding: 20px;
+            margin: 10px 40px 10px 10px;
+            color: white;
+            float: left;
+        }
+        .vilagoszold-doboz {
+            background-color: greenyellow;
+            border: 1px solid black;
+            width: 310px;
+            height: 70px;
+            padding: 10px;
+            margin-right: 5px;
+            color: black;
+            float: left;
+
+        }
+    
+        .sarga-doboz {
+            background-color: yellow;
+            border: 1px solid black;
+            width: 310px;
+            height: 70px;
+            padding: 10px;
+            color: black;
+            float: left;
+        }
+        h3 {
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+        .zold-doboz p {
+            text-align: center;
+            margin: 0;
+
+        }
+
+    </style>
+</head>
+<body>
+    <div class="topnav" id="myTopnav">
+        <a href="index.html">Kezdőlap</a>
+        <a href="coming.html">Hírek</a>
+        <a href="coming.html">Kapcsolat</a>
+        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">MEGLEPETÉS</a>
+        <a href="orarend.html">Órarend</a>
+        <a href="ufal.html">Üzenőfal</a>
+        <div class="dropdown">
+            <button class="dropbtn">Órai feladatok</button>
+            <div class="dropdown-content">
+                <a href="keplink.html">Kép + link</a>
+                <a href="kollazs.html">Kollázskép</a>
+                <a href="lista.html">Listák</a>
+                <a href="evszakok.html">Évszakok</a>
+                <a class="active" href="div.html">DIV-feladat</a>
+            </div>
+        </div>
+    </div>
+    <h1>A DIV elem gyakorlása</h1>
+    <div class="piros-doboz">
+        <h2>1. piros doboz</h2>
+    </div>
+    <div class="masodik-sor">
+        <div class="kek-doboz">
+            <h2>2.1 Kék doboz</h2>
+        </div>
+        <div class="zold-doboz">
+            <h2>2.2 Zöld doboz</h2>
+            <div class="vilagoszold-doboz">
+                <h3>2.2.1</h3>
+                <p>Világoszöld doboz</p>
+            </div>
+            <div class="sarga-doboz">
+                <h3>2.2.2.</h3>
+                <p>Sárga doboz</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
